@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.22.0 (955b78124)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: polkadot
+  name: polkadot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: polkadot
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.22.0 (955b78124)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: polkadot
+    spec:
+      containers:
+        - args:
+            - --name
+            - PolkaDocker
+            - --ws-external
+            - --rpc-external
+            - --rpc-cors
+            - all
+          image: parity/polkadot
+          name: polkadot
+          ports:
+            - containerPort: 30333
+            - containerPort: 9933
+            - containerPort: 9944
+          resources: {}
+          volumeMounts:
+            - mountPath: /polkadot
+              name: polkadot-claim0
+      restartPolicy: Always
+      volumes:
+        - name: polkadot-claim0
+          persistentVolumeClaim:
+            claimName: polkadot-claim0
+status: {}
