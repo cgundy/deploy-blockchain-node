@@ -1,0 +1,18 @@
+version: '2'
+
+services:
+  polkadot:
+    container_name: polkadot
+    image: parity/polkadot
+    ports:
+      - 30333:30333 # p2p port
+      - 9933:9933 # rpc port
+      - 9944:9944 # ws port
+    volumes:
+      - ./localdata:/polkadot
+    command: [
+      "--name", "PolkaDocker",
+      "--ws-external",
+      "--rpc-external",
+      "--rpc-cors", "all"
+    ]
