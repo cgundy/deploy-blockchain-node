@@ -1,0 +1,13 @@
+namespace: Develop
+
+images:
+  polkadot_node: "paritytech/polkadot:latest"
+
+p2p_ip: null 
+p2p_port: 30333
+rpc_port: 9933
+ws_port: 9944
+
+vol_size: 10Mi
+
+## add more values as needed

@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: polkadot-node
+  namespace: {{ .Values.Namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: polkadot-node
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: polkadot-node
+    spec:
+      containers:
+        - args:
+            - --name
+            - PolkaDocker
+            - --ws-external
+            - --rpc-external
+            - --rpc-cors
+            - all
+          image: {{ .Values.images.polkadot_node }}
+          name: polkadot
+          ports:
+            - containerPort: {{ .Values.p2p_port }}
+            - containerPort: {{ .Values.rpc_port }}
+            - containerPort: {{ .Values.ws_port }}
+          resources: {}
+          volumeMounts:
+            - mountPath: /polkadot
+              name: polkadot-claim0
+      restartPolicy: Always
+      volumes:
+        - name: polkadot-claim0
+          persistentVolumeClaim:
+            claimName: polkadot-claim0
